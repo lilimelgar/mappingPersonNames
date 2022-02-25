@@ -1,3 +1,5 @@
+## Disclaimer: This repository is created for learning/testing purposes only
+
 # Mapping historical persons names
 
 The purpose of this project is to help historians who struggle in comparing person names in two lists, trying to identify which persons (names) could be equivalent. This happens for instance, when a historian has a corpus of historical names which originated from printed letter edition A and another corpus of historical names which originated from a controlled authority list (for example VIAF). The researcher would like to see which of the names he is working with (listA) map to the VIAF file (listB), to obtain their Ids with the benefits that this brings afterwards (reusability, adding extra information to the persons, finding works created by those persons, etc.).
