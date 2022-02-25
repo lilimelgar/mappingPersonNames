@@ -1,14 +1,17 @@
 # Mapping historical persons names
 
-The purpose of this project is to help historians who struggle in comparing person names in two lists, trying to identify which persons (names) could be equivalent. This happens for instance, when a historian has a corpus of historical names which originated from printed letter edition A and another corpus of historical names which originated from a controlled authority list (for example VIAF). The researcher would like to see which of the names he is working with map to the VIAF file, to obtain their Ids with the benefits that this brings afterwards (reusability, adding extra information to the persons, finding works created by those persons, etc.).
+The purpose of this project is to help historians who struggle in comparing person names in two lists, trying to identify which persons (names) could be equivalent. This happens for instance, when a historian has a corpus of historical names which originated from printed letter edition A and another corpus of historical names which originated from a controlled authority list (for example VIAF). The researcher would like to see which of the names he is working with (listA) map to the VIAF file (listB), to obtain their Ids with the benefits that this brings afterwards (reusability, adding extra information to the persons, finding works created by those persons, etc.).
+
+This package outputs a list of candidates with scores (ToDo: explain what the scores mean). The user can then decide which of the candidates are valid matches.
 
 # Installation
 
 - The script is written in Python 3.7.10
-- It uses string matching algorithms from the fuzzywuzzy library (link here to library)
+- It uses string matching algorithms from the fuzzywuzzy library (link here to library) (version 0.18.0)
 - To run this project, clone the repository to your machine (with git clone, or simply download the zip file)
 - If you use a Python IDE (e.g., Visual studio), open the script in the src file (see structure below) called "personMapping_complete.py"
-- To use the script with your own lists of names, format the lists according to the structure explained in the section "Data formatting" below, and upload them as .csv files to the folder "data/raw". Name the files: listA.csv and listB.csv
+- To use the script with your own lists of names, format the lists according to the structure explained in the section "Data formatting" below, and upload them as .csv files to the folder "data/raw". Name the files: listA.csv and listB.csv. For testing purposes, you can just simply use the provided sample lists in the Data/raw folder.
+
 
 # Data formatting
 - Format the file as follows:
