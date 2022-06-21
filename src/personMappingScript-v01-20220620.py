@@ -79,7 +79,7 @@ for indexB, rowB in tqdm(dfB.iterrows(), total=dfB.shape[0]):
 		casesNoisy = {'X', 'Y', 'Z'}
 
 
-############################## CAPTURE SCORE TYPES (see link to Excel sheet above) #######################################
+############################## CAPTURE CASES (i.e., Score types) (see link to Excel sheet above) #######################################
 	############# SCORES TYPE A
 		# definition Score typeA: persons in both datasets (A and B) have complete dates of birth and death (in these cases Fl. date is not taken into account, actually, it shouldn't be added to the original data if there is db and dd)
 		if ((dateBirthA != 0 and dateDeathA != 0 and dateFlA == 0) and (dateBirthB != 0 and dateDeathB != 0 and dateFlB == 0)):
@@ -411,7 +411,7 @@ for indexB, rowB in tqdm(dfB.iterrows(), total=dfB.shape[0]):
 						  # 'caseA':caseA,
 						  # 'scoreTypeA':scoreTypeA
 						  },ignore_index=True,sort=False)
-
+		# this part works for the cases that allow for low string matching scores, since there are dates of birth/death/fl to use
 		elif caseName in casesPrecise:
 			if rangeScoreLow <= matchScore1 <= rangeScoreHigh:
 				scoreNameString = dfA.loc[indexA, 'scoreNameString'] = matchScore1
@@ -463,7 +463,7 @@ for indexB, rowB in tqdm(dfB.iterrows(), total=dfB.shape[0]):
 						  # 'caseA':caseA,
 						  # 'scoreTypeA':scoreTypeA
 						  },ignore_index=True,sort=False)
-
+		# this part works for the cases that don't have many dates available, thus, the string matching has to be higher
 		elif caseName in casesLoose:
 			if rangeScoreMid <= matchScore1 <= rangeScoreHigh:
 				scoreNameString = dfA.loc[indexA, 'scoreNameString'] = matchScore1
@@ -515,7 +515,6 @@ for indexB, rowB in tqdm(dfB.iterrows(), total=dfB.shape[0]):
 						  # 'caseA':caseA,
 						  # 'scoreTypeA':scoreTypeA
 						  },ignore_index=True,sort=False)
-
 		# depending on the data, these cases can give a lot of noise (incorrect mappings). During test round, case 'Y' was detected as the noisiest. After testing with different matching algorithms
 		# to find the one giving the lowest score for the wrong matches, I found that matchScore2 was causing the noise. Thus, here it's removed, and only matchScore1 is used.
 		elif caseName in casesNoisy:
@@ -544,6 +543,7 @@ for indexB, rowB in tqdm(dfB.iterrows(), total=dfB.shape[0]):
 						  # 'caseA':caseA,
 						  # 'scoreTypeA':scoreTypeA
 						  },ignore_index=True,sort=False)
+
 
 
 ######
