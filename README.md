@@ -2,13 +2,13 @@
 
 # Mapping historical persons names
 
-The purpose of this project is to help historians who struggle in comparing person names. Often, they need to determine whether a person from 'ListA' is the same as a person from 'ListB' since it is very common when working with historical data to come across different name variants for the same person. It happens very often that persons with the same 'name string' may be different persons, born in different years. This happens for instance, when a historian has a corpus of historical names which originated from printed letter edition A and another corpus of historical names which originated from a controlled authority list (for example VIAF). The researcher would like to see which of the names he is working with (ListA) map to the VIAF file (ListB). 
+The purpose of this project is to help historians who struggle in comparing person names. Often, they need to determine whether a person from 'ListA' is the same as a person from 'ListB'. This happens for instance, when a historian has a corpus of historical names which originated from printed letter edition A and another corpus of historical names which originated from a controlled authority list (for example VIAF). The researcher would like to see which of the names he is working with (ListA) map to the VIAF file (ListB). Because it is very common when working with historical data to come across different name variants for the same person, determining which names/persons are the same is not simple. It happens very often that persons with the same 'name string' may be different persons, born in different years, or that persons with different name strings are actually the same person.
 
-With this script, person names from any ListA are compared to person names from any ListB, trying to identify which persons (names) could be equivalent. This script outputs a list of candidates with scores (explained in the "Running the script" section below). The user can then decide which of the candidates are valid and then obtain the mapped Ids with the benefits that this brings afterwards (reusability, adding extra information to the persons, finding works created by those persons, etc.).
+With this script, person names from any ListA are compared to person names from any ListB, trying to identify which persons (based on their names) could be equivalent. This script uses string matching algorithms and rules based on the (if available) information of dates of birth/death or floriat (active year) of a person. It outputs a list of candidates with scores (explained in the "Running the script" section below). The user can then decide which of the candidates are valid and then obtain the mapped Ids with the benefits that this brings afterwards (reusability, adding extra information to the persons, finding works created by those persons, etc.).
 
 This script has been developed during the course of the SKILLNET project. The SKILLNET project ("Sharing Knowledge in Learned and Literary Networks") is an European Research Council (ERC)-funded project led by Dirk van Miert at Utrecht University. This project investigates the ideals of sharing knowledge as a legacy of a bottom-up social network of scholars and scientists from the Early Modern period. These scholars transcended religious, political and linguistic boundaries through their correspondence with one another. From about 1500 to around 1800, the ‘citizens’ of this European knowledge-based civil society referred to their own community as the ‘Republic of Letters’. 
 
-We mostly used this script to cluster person names from different letter datasets, and to assign mapped Ids from different authority lists/vocabularies to them.
+We mostly used this script to cluster person names from different letter datasets, and to assign mapped Ids from different authority lists/vocabularies to them. Because the script proved to be useful when comparing long lists of person names which were difficult to check manually, we offer it to the community of historians as a project deliverable.
 
 
 # Running the script
@@ -18,7 +18,7 @@ We mostly used this script to cluster person names from different letter dataset
 - To run this project, clone the repository to your machine (with git clone, or simply download the zip file)
 - First, open the jupyter notebook available in the src folder, called "MappingPersonNames.ipynb"
 - To use the script with your own lists of names, format the lists according to the structure explained in the section "Data formatting" below (also in the jupyter notebook there are explanations), and upload them as .csv files to the folder "data/raw". Name the files: ListA.csv and ListB.csv. For testing purposes, you can just simply use the provided sample lists in the Data/raw folder
-- Before running the notebook, paste the core of the mapping script, available here ({your path to repository}/mappingPersonNames/src/personMappingScript-v44-20220620.py) in the cell indicated in Step5 of the notebook. The script works with data structured as indicated below. If changes are done (e.g., new columns are added), this core script, and the notebook code have to be adapted. Otherwise, if the structure below is followed, just pasting the script and running the notebook should provide the expected output with mapping candidates.
+- Before running the notebook, paste the core of the mapping script, available here ({your path to repository}/mappingPersonNames/src/personMappingScript-versionNo....py) in the cell indicated in Step5 of the notebook. The script works with data structured as indicated below. If changes are done (e.g., new columns are added), this core script, and the notebook code have to be adapted. Otherwise, if the structure below is followed, just pasting the script and running the notebook should provide the expected output with mapping candidates.
 - Run the notebook
 - Locate the output file in the data/processed folder
 - To evaluate the mapping candidates, you could upload the resulting file to Open Refine (https://openrefine.org/), which makes it easier to filter, sort, and mark the correct candidates (e.g., using a star)
@@ -48,7 +48,7 @@ Notes:
 
 # Contributing
 
-You can submit Github issues to us. These are useful, for instance, if you detect errors in the data, or if you want to contribute to improve the code.
+You can submit Github issues to us. These are useful, for instance, if you detect errors in the data, or if you want to contribute to improve the code, or if you have any questions or suggestions.
 
 # Versioning
 
