@@ -11,11 +11,25 @@ This script has been developed during the course of the SKILLNET project. The SK
 We mostly used this script to cluster person names from different letter datasets, and to assign mapped Ids from different authority lists/vocabularies to them. Because the script proved to be useful when comparing long lists of person names which were difficult to check manually, we offer it to the community of historians as a project deliverable.
 
 
-# Running the script
+# Usage
 
-- The script is written in Python 3.7.10
+## Setting up
+- install [Anaconda](https://docs.anaconda.com/anaconda/install) on your system
+- clone the git repository to your machine, or simply download and extract the zip file
+- create a new Anaconda environment that contains everything necessary to run the script
+```shell
+conda env create
+```
+## Starting Jupyter notebooks
+```shell
+conda env activate personNames
+jupyter notebook
+```
+This will open Jupyter in your default webbrowser
+
+## Running the script
+
 - It uses string matching algorithms from the fuzzywuzzy library (https://pypi.org/project/fuzzywuzzy/) (version 0.18.0)
-- To run this project, clone the repository to your machine (with git clone, or simply download the zip file)
 - First, open the jupyter notebook available in the src folder, called "MappingPersonNames.ipynb"
 - To use the script with your own lists of names, format the lists according to the structure explained in the section "Data formatting" below (also in the jupyter notebook there are explanations), and upload them as .csv files to the folder "data/raw". Name the files: ListA.csv and ListB.csv. For testing purposes, you can just simply use the provided sample lists in the Data/raw folder
 - Before running the notebook, paste the core of the mapping script, available here ({your path to repository}/mappingPersonNames/src/personMappingScript-versionNo....py) in the cell indicated in Step5 of the notebook. The script works with data structured as indicated below. If changes are done (e.g., new columns are added), this core script, and the notebook code have to be adapted. Otherwise, if the structure below is followed, just pasting the script and running the notebook should provide the expected output with mapping candidates.
