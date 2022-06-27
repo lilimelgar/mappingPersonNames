@@ -1,0 +1,17 @@
+name: personNames
+channels:
+  - anaconda
+  - conda-forge
+  - defaults
+dependencies:
+  - python=3.7.*
+  - ipython
+  - jupyter
+  - pandas
+  - matplotlib
+  - numpy
+  - pip
+  - pip:
+    - fuzzywuzzy==0.18.0
+    - tqdm==4.64.0
+    - python-Levenshtein==0.12.2
