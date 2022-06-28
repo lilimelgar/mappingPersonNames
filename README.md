@@ -22,7 +22,7 @@ conda env create
 ```
 ## Starting Jupyter notebooks
 ```shell
-conda env activate personNames
+conda activate personNames
 jupyter notebook
 ```
 This will open Jupyter in your default webbrowser
