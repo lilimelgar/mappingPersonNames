@@ -5,3 +5,9 @@
 /data/temp
 /data/processed
 /data/raw
+
+# MacOS
+.DS_Store
+
+# Jupyter notebooks
+.ipynb_checkpoints
