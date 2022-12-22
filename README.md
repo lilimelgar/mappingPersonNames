@@ -13,7 +13,7 @@ We mostly used this script to cluster person names from different letter dataset
 
 # Usage
 
-## Step1: prepare your data for the mappings
+## Step1: Prepare your data for the mappings
 
 This script will help you to compare two lists of person names. Thus, the first step is to prepare those lists. Each list should be in a separate .csv file (comma separated file). 
 
@@ -49,7 +49,7 @@ Instead, try to separate the data in the specific columns to which they belong (
 
 - Place the two files in the folder: ./data/raw
 
-## Step2: decide how you will run the script
+## Step2: Decide how you will run the script
 
 The script that runs the mappings is written in Python (v.3.9.7) via a jupyter notebook (anaconda version 1.9.0), it uses string matching algorithms from the fuzzywuzzy library (https://pypi.org/project/fuzzywuzzy/) (version 0.18.0). You have three options to choose from for running the script depending on your familiarity with scripts:
 
@@ -73,35 +73,51 @@ This will open Jupyter in your default web browser.
 Instead of installing and using programs on your own computer, you can use a cloud service. We suggest, for example:
 
 - go to Google Colaboratory (the Google cloud service for running jupyter notebooks): https://colab.research.google.com/
-- use the option "Github" and enter the URL of this repository (image below)
-
+- use the option "Github" and enter the URL of this repository, and then click on the icon "open notebook in new tab"  (image below)
 
 ![Google Colaboratory](https://github.com/lilimelgar/mappingPersonNames/blob/main/docs/other/google_colab_screenshot.png?raw=true)
 
 
+## Step3: Running the script
 
+- Open the jupyter notebook available in the src folder, called "MappingPersonNames.ipynb" using one of the two options above.
 
-## Running the script
+- To use the script with your own lists of names, format the lists according to the structure explained in the section "Step1: Prepare your data for the mappings" above. and upload the .csv files to the folder "data/raw". Name the files: ListA.csv and ListB.csv. For testing purposes, we have added two sample lists to the data/raw folder.
 
-- 
-- First, open the jupyter notebook available in the src folder, called "MappingPersonNames.ipynb"
-- To use the script with your own lists of names, format the lists according to the structure explained in the section "Data formatting" below (also in the jupyter notebook there are explanations), and upload them as .csv files to the folder "data/raw". Name the files: ListA.csv and ListB.csv. For testing purposes, you can just simply use the provided sample lists in the Data/raw folder
-- Before running the notebook, paste the core of the mapping script, available here ({your path to repository}/mappingPersonNames/src/personMappingScript-versionNo....py) in the cell indicated in Step5 of the notebook. The script works with data structured as indicated below. If changes are done (e.g., new columns are added), this core script, and the notebook code have to be adapted. Otherwise, if the structure below is followed, just pasting the script and running the notebook should provide the expected output with mapping candidates.
-- Run the notebook
-- Locate the output file in the data/processed folder
-- To evaluate the mapping candidates, you could upload the resulting file to Open Refine (https://openrefine.org/), which makes it easier to filter, sort, and mark the correct candidates (e.g., using a star)
-- You can determine whether two candidates are the correct mapping using the scores. There are three different types:
-	- Score for the amount of data available: this is a one letter score (from A to Z) in which A means that person data was very complete in both lists. Complete means that, besides the name string, persons also had dates of birth and death. On the contrary, Z, indicates that there were only strings to map. Thus, a score of type D is better than a score of type H, since it means that there was more data available to compare the names and, then determine how equal they were. These scores were manually created using a table with all the combinatories possible between dates of birth, death, or floriat (which means the year in which a person was active). This table is available here: {repositoryPath}/mappingPersonNames/docs/other/casesScriptPersonClusteringversion20220620.xlsx.
-	- String matching score: this is a number between 50 (usually the minimum score allowed) to 100, where 100 means that the strings were exactly the same (e.g., 'Sigismondo Chigi' = 'Sigismondo Chigi' --> 100). These scores are obtained using a Python library called Fuzzy Wuzzy (https://pypi.org/project/fuzzywuzzy/).
-	- Full matching score: this is a number (up to 100) that indicates how similar the name from ListA is to the name from ListB using all available information: name string plus the dates (e.g., 'Sigismondo Chigi^1649^1678^0 compared to 'Sigismondo Chigi^0^1678^0 give a score of 91).
+- You can simply "run all cells", and then you will get as an output a .csv file with a list of mapping candidates (you can find the output file in the data/processed folder). These are the suggested mappings, which still require a manual check to determine which ones are actually correct.
+
+### Step 3.1: Adjust the script
+
+If you run the notebook as suggested above, you will be using the default settings. However, it is very important that you know your datasets very well in order to determine which parameters you should adapt. For example:
+
+- You can set up the "buffers" that you want to allow in the mappings. For example, with names from the 15th or 16th century it is possible that, due to changes in the calendar (from the Julian to the Gregorian calendar), or also because uncertainty, the years of birth or death of the persons may not be exactly the same in two different lists. Thus, you can decide if you tolerate a difference of zero, one, two, or even more years. There are also other "buffers" that you can set up, for example, what is the maximum life expectancy (it could be 80, or even 100 years, depending on what you think it's common in your dataset). The configuration file is located here: /mappingPersonNames/src/config.py. You can also set up these parameters directly in the notebook (you will be pointed there to the cell where you can do this).
+
+- You can also change the default settings in the main script. That script is located here: /mappingPersonNames/src/personMappingScript.py. When you run the jupyter notebook, this script is "called" from within the jupyter notebook. But you can go directly to the script and tweak some of the parameters, for example:
+
+	- choose which string matching algorithm you want to use (these are included in the manual of the Fuzzy Wuzzy library (https://pypi.org/project/fuzzywuzzy) which we use in the script). For example, if in ListA your names are in the name + last name order (Christiaan Huygens), and in ListB your names are in inverted order (Huygens, Christiaan), you may want to use the "fuzz.token_sort_ratio" algorithm (which is specified in the section "# Algorithm to be used" of the script.
+
+	- You can also change the scores that you want to use as mininum, middle or maximum. For this, it's important to understand that the core of the mapping script is based on the use of a very simple logics between the years of birth, death, and floriat (=active) years of a person. These rules were pre-written on a table, in order to account for all the possible combinations (the table with the cases is located here: /mappingPersonNames/docs/other/casesScriptPersonClusteringversion20220620.xlsx). The script written in Python uses those rules in order to classify the case to which a pair of personA-personB combination belongs to. Once the case is detected, it uses a letter to classify it (from A to Z, where A is the case with more information, for example: the case with richer information is that in which two persons have years of birth and death, which is named as case A). For the A cases, one can tolerate lower scores in the evaluation of the matching between the strings, because the years of birth and death can be used to assess whether they are good mapping candidates or not. For example:
+		- having this row in ListA: p001,Chistiaan Huygens,1629,1695,0 and this row in ListB: p008,Ch. Huygens,1629,1695,0
+		- if you use the algorithm fuzz.ratio, which compares the stings in order, you will get a score of 69 for the matching between the name strings "Christiaan Huygens" and "Ch. Huygens".
+		- if you set up the range parameters in the script (section "# String score ranges") to the following:
+			- rangeScoreVeryLow = 60 
+			- rangeScoreLow = 70
+			- rangeScoreMid = 80
+			- rangeScoreHigh = 100
+		- then this case will be detected as a good matching candidate, because it is a "caseVeryPrecise" (type A, due to the presence of the dates). 
+		- on the contrary, if the name on ListB didn't have years of birth nor of death, it wouldn't be taken as a mapping candidate, because the pair would be classified as Case X, which falls into the "noisy" cases, that only take scores that are between the rangeScoreMid and the rangeScoreHigh.
+		- of course, you can set the score ranges lower to also capture these case as a candidate, but then you will be faced with a longer list of candidates to evaluate manually.
+
+## Step4: Evaluate the mapping candidates
+- Once you run the script, you can locate the output file in the data/processed folder. This is also a .csv file which contains in every row a pair of names that are considered to be the same persons according to the parameters set above.
+- To evaluate the mapping candidates, you could upload the resulting file to Open Refine (https://openrefine.org/), which makes it easier to filter, sort, and mark the correct candidates (e.g., using a star). But you can also use a spreadsheet, or the .csv file directly.
+- You can determine whether two candidates are the correct mapping using the scores. There are three different types of scores: (a) the string matching score (which only looks at the similitud between the name string), (b) the scoreCase (which is the type of pair, named with a letter between A and Z depending on the amount of information available, as explained above), and (c) a verbose score called "ScoreMappedVersionsNotChangedis100" which compares the similitude between the name string plus the dates as a whole (as if they were an entire name string) between the two candidates.
 - Once you have marked the correct mappings, you can decide what to do with the mappings depending on the purpose (e.g., if you used the mappings to know which persons were the same, or if you used to integrate the Ids of ListB into ListA, or if you used it to obtain dates of birth/death/floriat that were not present in your initial list...)
-
-
 
 
 # Contributing
 
-You can submit Github issues to us. These are useful, for instance, if you detect errors in the data, or if you want to contribute to improve the code, or if you have any questions or suggestions.
+You can submit Github issues to us. These are useful, for instance, if you detect errors in the script, or if you want to contribute to improve the code, or if you have any questions or suggestions.
 
 # Versioning
 
@@ -109,7 +125,10 @@ We name the versions of our data and scripts with the date of their latest updat
 
 # References
 
-- t.b.d.
+- Cohen, A. (2022). fuzzywuzzy: Fuzzy string matching in python (0.18.0) [Python]. Retrieved December 22, 2022, from https://github.com/seatgeek/fuzzywuzzy
+- Soma, Jonathan (2017). "Fuzzing matching in Pandas with FuzzyWuzzy". http://jonathansoma.com/lede/algorithms-2017/classes/fuzziness-matplotlib/fuzzing-matching-in-pandas-with-fuzzywuzzy/
+- Nehme, Adel (2020). "Fuzzy String Matching in Python". https://learn.datacamp.com/courses/cleaning-data-in-python
+
 
 ## License
 
@@ -120,7 +139,7 @@ This project is licensed under the terms of the [MIT License](/LICENSE.md)
 ## Authors responsibilities
 
 - **Liliana Melgar-Estrada**: Author of the script, responsible for data preparation and depositing.
-- **Jelte van Boheemen**: advisor... (t.b.d.)
+- **Jelte van Boheemen**: advisor and code reviewer from the Digital Humanities Center at Utrecht University (https://www.uu.nl/medewerkers/JvanBoheemen)
 
 ## Acknowledgements 
 Contributors who participated in this project:
