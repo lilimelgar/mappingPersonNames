@@ -13,23 +13,77 @@ We mostly used this script to cluster person names from different letter dataset
 
 # Usage
 
-## Setting up
+## Step1: prepare your data for the mappings
+
+This script will help you to compare two lists of person names. Thus, the first step is to prepare those lists. Each list should be in a separate .csv file (comma separated file). 
+
+- Name each of the two files in this way: ListA.csv and ListB.csv
+
+- Each file should have a minimum of five columns, with the column headers named as follows:
+
+	- For ListA.csv --> personIdA,nameStringA,dateBirthA,dateDeathA,dateFlA
+	- For ListB.csv --> personIdB,nameStringB,dateBirthB,dateDeathB,dateFlB
+
+- Meaning of the columns
+personId: any Id used to identify a person in listA. It can be a recognized ID (e.g., VIAF, wikidata, etc.) or your own Ids (e.g., skp001)
+dateBirth: the year of birth of the person from ListA. Leave empty or use a zero '0' if not known. 
+dateDeath: the year of death of the person from ListA. Leave empty or use a zero '0' if not known
+dateFl: floriat date from person in ListA (year in which it is known a person without dates of birth/death was alive)
+
+To take into account:
+
+- Years have to be in the form YYYY. 
+
+- Be careful of not having commas as part of the name string or, if they are, the name string should be wrapped in quotation marks (e.g., "Charles de Sainte-Maure, duc de Montausier"). Preferable, replace those commas by semicolons, otherwise, there may be a problem when parsing the data. Ideally, separate "duc de Montausier" to the name, and put that piece of information on a column called, for instance, "role".
+
+- Notes, dates, roles, or uncertainty marks should NOT be added to the names themselves. For example, these strings below are NOT a good practice for names nor for dates: 
+	- Johannes Henricus van der Palm (1763-1840)
+	- Aarnout van Beaumont ca. 1605-1678
+	- graaf Ernst von Kaunitz 1671 fl.
+	- 174X
+Instead, try to separate the data in the specific columns to which they belong (e.g., dateBirth), and add additional columns to indicate uncertainty (e.g., "is_dateBirth_certain", filled in with the value "y" or "n"). 
+
+- The script works by default with the five columns described above, but of course more columns can be added to your data. In that case, take into account that, if extra columns are added in addition to the columns above, the script has to be adapted to incorporate them in the output.
+
+- A limitation of this script is that, if a date is uncertain and there is a range within which the date of birth occurs (e.g., between 1630 anad 1635) the script won't handle those ranges. Thus, please choose a specific year, for example, 1632 as the year of birth, and then use the "buffers" added to the configuration file (more on this later) to indicate how many years of difference you would like to tolerate when evaluating the mapping between two persons.
+
+- Place the two files in the folder: ./data/raw
+
+## Step2: decide how you will run the script
+
+The script that runs the mappings is written in Python (v.3.9.7) via a jupyter notebook (anaconda version 1.9.0), it uses string matching algorithms from the fuzzywuzzy library (https://pypi.org/project/fuzzywuzzy/) (version 0.18.0). You have three options to choose from for running the script depending on your familiarity with scripts:
+
+### Option1: if you are familiar with running scripts on your own
+
 - install [Anaconda](https://docs.anaconda.com/anaconda/install) on your system
 - clone the git repository to your machine, or simply download and extract the zip file
-- create a new Anaconda environment that contains everything necessary to run the script
+- create a new Anaconda environment that contains everything necessary to run the script (use the requirements.txt file)
 ```shell
 conda env create
 ```
-## Starting Jupyter notebooks
+- starting Jupyter notebooks
 ```shell
 conda activate personNames
 jupyter notebook
 ```
-This will open Jupyter in your default webbrowser
+This will open Jupyter in your default web browser.
+
+### Option2: if you are not familiar with running scripts on your own
+
+Instead of installing and using programs on your own computer, you can use a cloud service. We suggest, for example:
+
+- go to Google Colaboratory (the Google cloud service for running jupyter notebooks): https://colab.research.google.com/
+- use the option "Github" and enter the URL of this repository (image below)
+
+
+![Google Colaboratory](/mappingPersonNames/docs/other/google_colab_screenshot.png?raw=true "Google Colaboratory")
+
+
+
 
 ## Running the script
 
-- It uses string matching algorithms from the fuzzywuzzy library (https://pypi.org/project/fuzzywuzzy/) (version 0.18.0)
+- 
 - First, open the jupyter notebook available in the src folder, called "MappingPersonNames.ipynb"
 - To use the script with your own lists of names, format the lists according to the structure explained in the section "Data formatting" below (also in the jupyter notebook there are explanations), and upload them as .csv files to the folder "data/raw". Name the files: ListA.csv and ListB.csv. For testing purposes, you can just simply use the provided sample lists in the Data/raw folder
 - Before running the notebook, paste the core of the mapping script, available here ({your path to repository}/mappingPersonNames/src/personMappingScript-versionNo....py) in the cell indicated in Step5 of the notebook. The script works with data structured as indicated below. If changes are done (e.g., new columns are added), this core script, and the notebook code have to be adapted. Otherwise, if the structure below is followed, just pasting the script and running the notebook should provide the expected output with mapping candidates.
@@ -43,22 +97,7 @@ This will open Jupyter in your default webbrowser
 - Once you have marked the correct mappings, you can decide what to do with the mappings depending on the purpose (e.g., if you used the mappings to know which persons were the same, or if you used to integrate the Ids of ListB into ListA, or if you used it to obtain dates of birth/death/floriat that were not present in your initial list...)
 
 
-# Data formatting
-- Format the file as a .csv (comma separated file) as follows:
-personIdA,nameStringA,dateBirthA,dateDeathA,dateFlA
-- Meaning of the columns
-personIdA: any Id used to identify a person in listA. It can be a recognized ID (e.g., VIAF, wikidata, etc.) or your own Ids (e.g., skp001)
-personIdB: the same, but for listB
-dateBirthA: the year of birth of the person from ListA. Leave empty or use a zero '0' if not known. 
-dateBirthB: the year of birth of the person from ListB. Leave empty or use a zero '0' if not known
-dateDeathA: the year of death of the person from ListA. Leave empty or use a zero '0' if not known
-dateDeathB: the year of death of the person from ListB. Leave empty or use a zero '0' if not known
-dateFlA: floriat date from person in ListA (year in which it is known a person without dates of birth/death was alive)
-dateFlB: floriat date from person in ListB (year in which it is known a person without dates of birth/death was alive)
 
-Notes:
-- Years have to be in the form YYYY. Notes or uncertainty marks should NOT be added. If they exist, use a separated column. But, take into account that, if extra columns are added in addition to the columns above, the script has to be adapted to incorporate them in the output.
-- Be careful of not having commas as part of the name string or, if they are, the name string should be wrapped in quotation marks (e.g., "Charles de Sainte-Maure, duc de Montausier"). Preferable, replace those commas by semicolons, otherwise, there may be a problem when parsing the data.
 
 # Contributing
 
