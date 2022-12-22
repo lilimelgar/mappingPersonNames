@@ -1,4 +1,6 @@
-## Disclaimer: This repository contains code and data for testing purposes only
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.7473692.svg)](https://doi.org/10.5281/zenodo.7473692)
+
+Disclaimer: The data added to this repository is for testing purposes only
 
 # Mapping historical persons names
 
@@ -41,6 +43,7 @@ To take into account:
 	- Aarnout van Beaumont ca. 1605-1678
 	- graaf Ernst von Kaunitz 1671 fl.
 	- 174X
+
 Instead, try to separate the data in the specific columns to which they belong (e.g., dateBirth), and add additional columns to indicate uncertainty (e.g., "is_dateBirth_certain", filled in with the value "y" or "n"). 
 
 - The script works by default with the five columns described above, but of course more columns can be added to your data. In that case, take into account that, if extra columns are added in addition to the columns above, the script has to be adapted to incorporate them in the output.
