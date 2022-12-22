@@ -1,5 +1,6 @@
 # exclude compiled binaries and external models
 /bin
+*.pyc
 
 # exclude data from source control by default
 /data/temp
