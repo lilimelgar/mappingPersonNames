@@ -76,7 +76,7 @@ Instead of installing and using programs on your own computer, you can use a clo
 - use the option "Github" and enter the URL of this repository (image below)
 
 
-![Google Colaboratory](/mappingPersonNames/docs/other/google_colab_screenshot.png?raw=true "Google Colaboratory")
+![Google Colaboratory](https://github.com/lilimelgar/mappingPersonNames/docs/other/google_colab_screenshot.png?raw=true "Google Colaboratory")
 
 
 
